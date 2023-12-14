@@ -9,6 +9,9 @@ def index():
 
 @app_routes.route('/upload', methods=['POST'])
 def upload_file():
+    name = request.form['name']
+    subject = request.form['subject']
+
     if 'file' not in request.files:
         return render_template('upload.html', message='No file part. Please try again.')
 
@@ -18,7 +21,7 @@ def upload_file():
         return render_template('upload.html', message='No selected file. Please try again.')
 
     if file:
-        upload_to_azure(file)
+        upload_to_azure(file, name, subject)
         return render_template('upload.html', message='Thank you for contributing')
 
    

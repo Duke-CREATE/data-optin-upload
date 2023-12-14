@@ -13,4 +13,4 @@ push:
 	docker push $(DOCKER_REPO)/data-upload-app:latest
 
 run: 
-	docker run -d -p 5000:5000 flask-app
+	flask run

@@ -1,15 +1,28 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Upload File</title>
+    <title>Donate Data to Duke</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='form-style.css') }}">
 </head>
 <body>
-    <h1>Upload File to Azure</h1>
-    <form method="post" action="{{ url_for('app_routes.upload_file') }}" enctype="multipart/form-data">
-        <input type="file" name="file">
-        <input type="submit" value="Upload">
-    </form>
+    <div class="centered-container">
+        <h1>Upload File to Duke CREATE</h1>
+        <div id="subheader">
+            <p>The data will only be used to improve a large language model for Duke student, faculty, and staff use. This data is securely protected by the CREATE Lab and will not be moved outside of Duke.</p>
+        </div>
+        <form method="post" action="{{ url_for('app_routes.upload_file') }}" enctype="multipart/form-data">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required><br><br>
 
+            <label for="subject">Subject:</label>
+            <input type="text" id="subject" name="subject" required><br><br>
+
+            <label for="file">File:</label>
+            <input type="file" id="file" name="file" required><br><br>
+
+            <input type="submit" value="Upload">
+        </form>
+    </div>
     {% if message %}
         <input type="hidden" id="uploadMessage" value="{{ message }}">
 
