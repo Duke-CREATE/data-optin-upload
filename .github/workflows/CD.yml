@@ -1,0 +1,24 @@
+name: Continuous Deployment
+on: 
+  push:
+    branches: 
+      - production
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.10'
+
+    - name: Build Docker
+      run: Make build
+    
+    - name: Push Docker
+      run: Make push
+    

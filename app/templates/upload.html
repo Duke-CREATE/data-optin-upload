@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Upload File</title>
+</head>
+<body>
+    <h1>Upload File to Azure</h1>
+    <form method="post" action="{{ url_for('app_routes.upload_file') }}" enctype="multipart/form-data">
+        <input type="file" name="file">
+        <input type="submit" value="Upload">
+    </form>
+
+    {% if message %}
+        <input type="hidden" id="uploadMessage" value="{{ message }}">
+
+        <script type="text/javascript">
+            document.addEventListener('DOMContentLoaded', function() {
+                var uploadMessage = document.getElementById('uploadMessage').value;
+                alert(uploadMessage);
+                window.location.href = "{{ url_for('app_routes.index') }}";
+            });
+        </script>
+    {% endif %}
+</body>
+</html>
