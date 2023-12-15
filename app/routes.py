@@ -1,5 +1,5 @@
 from flask import Blueprint, request, render_template, redirect, url_for
-from .utils import upload_to_azure
+from .utils import upload_data_to_server
 
 app_routes = Blueprint('app_routes', __name__)
 
@@ -21,7 +21,7 @@ def upload_file():
         return render_template('upload.html', message='No selected file. Please try again.')
 
     if file:
-        upload_to_azure(file, name, subject)
+        upload_data_to_server(file, name, subject)
         return render_template('upload.html', message='Thank you for contributing')
 
    

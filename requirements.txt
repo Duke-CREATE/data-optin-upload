@@ -2,3 +2,8 @@ pytest
 
 flask
 flask-cors
+
+pyodbc
+azure-storage-blob
+
+python-dotenv
