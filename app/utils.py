@@ -7,16 +7,22 @@ import dotenv
 # Load environment variables
 dotenv.load_dotenv()
 
-# Azure SQL Database Connection String
-conn_str = os.getenv("DB_CONNECTION_STRING")
+def login_to_resources():
+    # Azure SQL Database Connection String
+    conn_str = os.getenv("DB_CONNECTION_STRING")
 
-# Azure Blob Storage Connection String
-blob_connect_str = os.getenv("BLOB_CONNECTION_STRING")
-container_name = os.getenv("BLOB_CONTAINER_NAME")
-blob_service_client = BlobServiceClient.from_connection_string(blob_connect_str)
-container_client = blob_service_client.get_container_client(container_name)
+    # Azure Blob Storage Connection String
+    blob_connect_str = os.getenv("BLOB_CONNECTION_STRING")
+    container_name = os.getenv("BLOB_CONTAINER_NAME")
+    blob_service_client = BlobServiceClient.from_connection_string(blob_connect_str)
+    container_client = blob_service_client.get_container_client(container_name)
+
+    return conn_str, container_client
 
 def upload_data_to_server(file, owner_name, subject):
+    # Login to Azure Resources
+    conn_str, container_client = login_to_resources()
+    
     # Get file metadata
     file_type = os.path.splitext(file.filename)[1]
     timestamp = datetime.now()
