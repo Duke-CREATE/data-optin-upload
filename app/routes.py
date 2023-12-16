@@ -21,7 +21,9 @@ def upload_file():
         return render_template('upload.html', message='No selected file. Please try again.')
 
     if file:
-        upload_data_to_server(file, name, subject)
-        return render_template('upload.html', message='Thank you for contributing')
+        if upload_data_to_server(file, name, subject):
+            return render_template('upload.html', message='Thank you for contributing')
+        else:
+            return render_template('upload.html', message='Something went wrong. Please try again.')
 
    

@@ -25,16 +25,25 @@ def upload_data_to_server(file, owner_name, subject):
     blob_name = f"{timestamp.strftime('%Y%m%d%H%M%S')}-{file.filename}"
     blob_client = container_client.get_blob_client(blob_name)
 
-    # Upload the file to Azure Blob Storage
-    blob_client.upload_blob(file.stream, overwrite=True)
 
     # Connect to Azure SQL Database
-    conn = pyodbc.connect(conn_str)
-    cursor = conn.cursor()
+    try:
+        conn = pyodbc.connect(conn_str)
+        cursor = conn.cursor()
+    except Exception as e:
+        print(e)
+        return 0
+
+    # Upload the file to Azure Blob Storage
+    try:
+        blob_client.upload_blob(file.stream, overwrite=True)
+    except Exception as e:
+        print(e)
+        return 0
 
     # Store Metadata in SQL Database
     blob_url = f"{blob_client.url}"
-    cursor.execute("INSERT INTO FileMetadata (OwnerName, TimeStamp, Subject, FileName, FileType, BlobUrl) VALUES (?, ?, ?, ?, ?, ?)",
+    cursor.execute("INSERT INTO FileData (OwnerName, TimeStamp, Subject, FileName, FileType, BlobUrl) VALUES (?, ?, ?, ?, ?, ?)",
                    owner_name, timestamp, subject, file.filename, file_type, blob_url)
     conn.commit()
 
@@ -50,5 +59,5 @@ def upload_data_to_server(file, owner_name, subject):
     print(f"timestamp: {timestamp}")
     print(f"blob url: {blob_url}")
 
-    return None
+    return 1
 
