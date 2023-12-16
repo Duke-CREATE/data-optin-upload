@@ -1,5 +1,5 @@
 # Use Python 3.9 slim buster image
-FROM python:3.10-slim-buster
+FROM python:3.9.10-slim-buster
 
 # This was nessessary to get the ODBC driver working on our other project so may need it for this.
 # Install system dependencies for PyODBC
@@ -39,8 +39,8 @@ EXPOSE 5000
 
 # Define environment variable
 ENV NAME World
-ENV FLASK_APP=app
-ENV FLASK_ENV=production
+# ENV FLASK_APP=app
+# ENV FLASK_ENV=production
 
 # Run server
 CMD ["flask", "run", "--host=0.0.0.0", "--port=5000"]
