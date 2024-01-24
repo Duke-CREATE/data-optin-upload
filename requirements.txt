@@ -7,3 +7,6 @@ pyodbc
 azure-storage-blob
 
 python-dotenv
+
+requests
+requests_oauthlib
