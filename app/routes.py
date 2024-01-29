@@ -21,7 +21,11 @@ DUKE_CLIENT_SECRET = os.getenv('DUKE_CLIENT_SECRET','')
 
 @app_routes.route('/')
 def index():
-    return render_template('upload.html')
+    if 'usr' in session:
+        print(session['usr'])
+        return render_template('upload.html')
+    else:
+        return render_template('login.html')
 
 @app_routes.route('/upload', methods=['POST'])
 def upload_file():
@@ -43,7 +47,7 @@ def upload_file():
             return render_template('upload.html', message='Something went wrong. Please try again.')
 
    
-@app_routes.route('/sso', methods=['GET'])
+@app_routes.route('/login', methods=['GET'])
 def sso_login():
     responseType = 'code'
     
@@ -86,12 +90,5 @@ def duke_auth():
     email = email.lower().strip()
     print(email)
     session['usr'] = email
-
-    # Remove university and status from session
-    # session.pop('university_sso')
-    # session.pop('status_sso')
-
-    # if 'course' in session:
-    #     session.pop('course')
 
     return redirect(url_for("index"))
