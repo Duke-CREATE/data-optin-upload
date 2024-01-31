@@ -5,6 +5,12 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='form-style.css') }}">
 </head>
 <body>
+    <!-- Displaying logged-in user's name -->
+    {% if user %}
+        <div class="user-info">
+            Welcome, {{ user }}
+        </div>
+    {% endif %}
     <div class="centered-container">
         <h1>Upload File to Duke CREATE</h1>
         <div id="subheader">

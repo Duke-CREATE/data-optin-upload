@@ -10,7 +10,8 @@ app_routes = Blueprint('app_routes', __name__)
 # Duke OATH URLs
 # TODO: Make sure these are correct and secure
 DUKE_AUTHORIZATION_BASE_URL = 'https://oauth.oit.duke.edu/oidc/authorize'
-DUKE_REDIRECT_URI = 'https://127.0.0.1:5000/auth'
+# DUKE_REDIRECT_URI = 'https://127.0.0.1:5000/auth'
+DUKE_REDIRECT_URI = 'https://duke-data-donation.azurewebsites.net/auth'
 DUKE_TOKEN_URL = 'https://oauth.oit.duke.edu/oidc/token'
 DUKE_USERINFO_URL = 'https://oauth.oit.duke.edu/oidc/userinfo'
 DUKE_LOGOUT_URL = 'https://oauth.oit.duke.edu/oidc/logout.jsp'
@@ -19,17 +20,18 @@ DUKE_CLIENT_ID = os.getenv('DUKE_CLIENT_ID','')
 DUKE_CLIENT_SECRET = os.getenv('DUKE_CLIENT_SECRET','')
 
 
+
+@app_routes.route('/login', methods=['GET'])
+def loginpage():
+    return render_template('login.html')
+
 @app_routes.route('/')
 def index():
     if 'usr' in session:
         print(session['usr'])
-        return render_template('upload.html')
+        return render_template('upload.html', user=session['usr'])
     else:
-        return redirect(url_for("login"))
-
-@app_routes.route('/login', methods=['GET'])
-def login():
-    return render_template('login.html')
+        return redirect(url_for('app_routes.loginpage'))
 
 @app_routes.route('/upload', methods=['POST'])
 def upload_file():
@@ -72,7 +74,7 @@ def duke_auth():
     state = request.args.get('state', None)
     if state != expected_state:
         print(f"State does not match: {state} | {expected_state}" )
-        return redirect(url_for("login"))
+        return redirect(url_for('app_routes.loginpage'))
     
     # Get correct token url and redirect uri for Duke
     
@@ -98,4 +100,4 @@ def duke_auth():
     print(email)
     session['usr'] = email
 
-    return redirect(url_for("index"))
+    return redirect(url_for('app_routes.index'))
