@@ -25,7 +25,11 @@ def index():
         print(session['usr'])
         return render_template('upload.html')
     else:
-        return render_template('login.html')
+        return redirect(url_for("login"))
+
+@app_routes.route('/login', methods=['GET'])
+def login():
+    return render_template('login.html')
 
 @app_routes.route('/upload', methods=['POST'])
 def upload_file():
@@ -47,7 +51,7 @@ def upload_file():
             return render_template('upload.html', message='Something went wrong. Please try again.')
 
    
-@app_routes.route('/login', methods=['GET'])
+@app_routes.route('/dukesso', methods=['GET'])
 def sso_login():
     responseType = 'code'
     
@@ -67,7 +71,8 @@ def duke_auth():
     expected_state = session['oath_state']
     state = request.args.get('state', None)
     if state != expected_state:
-        return redirect(url_for("sso_login"))
+        print(f"State does not match: {state} | {expected_state}" )
+        return redirect(url_for("login"))
     
     # Get correct token url and redirect uri for Duke
     
@@ -82,8 +87,10 @@ def duke_auth():
     response_url = request.url  
     if "http:" in response_url:
         response_url = "https:" + response_url[5:]
+
     token = SSO.fetch_token(token_url, client_secret=client_secret, authorization_response=response_url)
     session['oath_token'] = token
+    print(token)
     userInfo = SSO.get(DUKE_USERINFO_URL)
     userInfo = userInfo.json()
     email = userInfo['email']
