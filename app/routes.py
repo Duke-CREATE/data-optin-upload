@@ -29,7 +29,7 @@ def loginpage():
 def index():
     if 'usr' in session:
         print(session['usr'])
-        return render_template('upload.html', user=session['usr'])
+        return render_template('upload.html', user=session['usr'], info=session['user_info'])
     else:
         return redirect(url_for('app_routes.loginpage'))
 
@@ -54,13 +54,12 @@ def upload_file():
 
    
 @app_routes.route('/dukesso', methods=['GET'])
-def sso_login():
+def sso_login():   
     responseType = 'code'
-    
     client_id = DUKE_CLIENT_ID
-    client_secret = DUKE_CLIENT_SECRET
     authorization_base_url = DUKE_AUTHORIZATION_BASE_URL
     redirect_uri = DUKE_REDIRECT_URI
+    client_secret = DUKE_CLIENT_SECRET
 
     state = str(uuid.uuid4())
     SSO = OAuth2Session(client_id = client_id, state=state, redirect_uri=redirect_uri)
@@ -92,12 +91,17 @@ def duke_auth():
 
     token = SSO.fetch_token(token_url, client_secret=client_secret, authorization_response=response_url)
     session['oath_token'] = token
-    print(token)
+    # Get user info
     userInfo = SSO.get(DUKE_USERINFO_URL)
     userInfo = userInfo.json()
     email = userInfo['email']
     email = email.lower().strip()
-    print(email)
-    session['usr'] = email
+    user_info = userInfo
+    name = userInfo['name']
+    primaryAffiliation = userInfo['dukePrimaryAffiliation']
+    netid = userInfo['dukeNetID']
+
+    session['usr'] = f'{name}({netid})'
+    session['user_info'] = user_info
 
     return redirect(url_for('app_routes.index'))

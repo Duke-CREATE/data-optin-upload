@@ -10,6 +10,9 @@
         <div class="user-info">
             Welcome, {{ user }}
         </div>
+        <script>
+            console.log("profile : {{ info | tojson }}");
+        </script>
     {% endif %}
     <div class="centered-container">
         <h1>Upload File to Duke CREATE</h1>
