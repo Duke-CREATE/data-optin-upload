@@ -11,7 +11,7 @@
             Welcome, {{ user }}
         </div>
         <script>
-            console.log("profile : {{ info | tojson }}");
+            console.log("profile : {{ info | tojson | safe}}")
         </script>
     {% endif %}
     <div class="centered-container">
