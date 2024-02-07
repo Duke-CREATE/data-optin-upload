@@ -10,24 +10,23 @@
         <div class="user-info">
             Welcome, {{ user }}
         </div>
-        <script>
-            console.log("profile : {{ info | tojson | safe}}")
-        </script>
     {% endif %}
     <div class="centered-container">
         <h1>Upload File to Duke CREATE</h1>
         <div id="subheader">
-            <p>The data will only be used to improve a large language model for Duke student, faculty, and staff use. This data is securely protected by the CREATE Lab and will not be moved outside of Duke.</p>
+            <p>We welcome any academic content for use training AI models to be delployed for Duke community access. This data is securely protected by the CREATE Lab and will not be moved outside of Duke. More information can be found at https://sites.duke.edu/createcenter/</p>
         </div>
         <form method="post" action="{{ url_for('app_routes.upload_file') }}" enctype="multipart/form-data">
-            <label for="name">Name:</label>
-            <input type="text" id="name" name="name" required><br><br>
-
-            <label for="subject">Subject:</label>
-            <input type="text" id="subject" name="subject" required><br><br>
+            <label for="description">Description:</label>
+            <input type="text" id="description" name="description" required><br><br>
 
             <label for="file">File:</label>
             <input type="file" id="file" name="file" required><br><br>
+
+            <label for="copyright-confirmation">
+                <input type="checkbox" id="copyright-confirmation" name="copyright-confirmation" required>
+                By checking this box, I confirm copyright ownership over all uploaded documents and give permission to Duke CREATE to use said data.
+            </label><br><br>
 
             <input type="submit" value="Upload">
         </form>
