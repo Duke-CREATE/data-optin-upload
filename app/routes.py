@@ -29,14 +29,18 @@ def loginpage():
 def index():
     if 'usr' in session:
         print(session['usr'])
-        return render_template('upload.html', user=session['usr'], info=session['user_info'])
+        return render_template('upload.html', user=session['usr'])
     else:
         return redirect(url_for('app_routes.loginpage'))
 
+# Uncomment this route to enable offline testing - useful for development without SSO
+# @app_routes.route('/offlinetesting', methods=['GET'])
+# def offlinetesting():
+#     return render_template('upload.html', user='offline')
+
 @app_routes.route('/upload', methods=['POST'])
 def upload_file():
-    name = request.form['name']
-    subject = request.form['subject']
+    name = request.form['description']
 
     if 'file' not in request.files:
         return render_template('upload.html', message='No file part. Please try again.')
@@ -101,7 +105,7 @@ def duke_auth():
     primaryAffiliation = userInfo['dukePrimaryAffiliation']
     netid = userInfo['dukeNetID']
 
-    session['usr'] = f'{name}({netid})'
+    session['usr'] = f'{name} ({netid})'
     session['user_info'] = user_info
 
     return redirect(url_for('app_routes.index'))
