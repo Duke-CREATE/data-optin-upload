@@ -2,20 +2,23 @@
 from azure.storage.blob import BlobServiceClient
 import datetime
 import os
-import dotenv
 from pinecone import Pinecone
-from PyPDF2 import PdfReader
+# from PyPDF2 import PdfReader
 from .cleaning_utils import *
 from .uploading_vdb_utils import *
 from sqlalchemy import create_engine
 
 
-# Load environment variables
-dotenv.load_dotenv()
-
-
-def login_to_resources():
-    # Azure SQL Database Connection String
+def login_to_resources(): 
+    '''
+    This function logs into the Azure Resources and Pinecone
+    Args:
+        None
+    Returns:
+        container_client (BlobClient): The Azure Blob Storage container client
+        index (Index): The Pinecone index
+        engine (Engine): The SQLAlchemy engine
+    '''
     # Create a SQLAlchemy engine using the MySQL connection details
     engine = create_engine(
         f"mysql+mysqlconnector://{os.getenv('MYSQL_ADMIN')}:{os.getenv('MYSQL_PASS')}@{os.getenv('MYSQL_HOST')}/{os.getenv('MY_SQL_DATABASE')}"
@@ -26,8 +29,9 @@ def login_to_resources():
     index = pc.Index("chatarena")
 
     # Azure Blob Storage Connection String
-    blob_connect_str = os.getenv("BLOB_CONNECTION_STRING")
-    container_name = os.getenv("BLOB_CONTAINER_NAME")
+    blob_connect_str = os.getenv("BLOB_CONNECTION_STR")
+    container_name = os.getenv("BLOB_CONTAINER")
+
     blob_service_client = BlobServiceClient.from_connection_string(blob_connect_str)
     container_client = blob_service_client.get_container_client(container_name)
 
@@ -116,11 +120,11 @@ def upload_data_to_server(file, owner_name, owner_netid, owner_affiliation, subj
         return 0
 
     # print stuff for offline debugging
-    print(f"file name: {file.filename}")
-    print(f"file type: {file_type}")
-    print(f"name: {owner_name}")
-    print(f"subject: {subject}")
-    print(f"timestamp: {timestamp}")
-    print(f"blob url: {blob_url}")
+    # print(f"file name: {file.filename}")
+    # print(f"file type: {file_type}")
+    # print(f"name: {owner_name}")
+    # print(f"subject: {subject}")
+    # print(f"timestamp: {timestamp}")
+    # print(f"blob url: {blob_url}")
 
     return 1

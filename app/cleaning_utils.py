@@ -6,7 +6,6 @@ import re
 # from nltk.tokenize import word_tokenize
 import time
 from langchain.text_splitter import TokenTextSplitter
-from langchain_openai import OpenAIEmbeddings
 import pandas as pd
 from openai import OpenAI
 import dotenv

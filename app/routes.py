@@ -25,8 +25,11 @@ def loginpage():
 
 @app_routes.route('/')
 def index():
+    '''
+    This route renders the home page if the user is logged in
+    routes to the login page if the user is not logged in
+    '''
     if 'usr' in session:
-        print(session['usr'])
         return render_template('upload.html', user=session['usr'])
     else:
         return redirect(url_for('app_routes.loginpage'))
@@ -34,12 +37,18 @@ def index():
 # Uncomment this route to enable offline testing - useful for development without SSO
 @app_routes.route('/offlinetesting', methods=['GET'])
 def offlinetesting():
+    '''
+    FOR TESTING PURPOSES ONLY! Circumvents SSO and logs in a test user
+    '''
     session['usr'] = 'testuser'
     session['user_info'] = {'name': 'test', 'dukeNetID': 'test123', 'email': 'test@test', 'dukePrimaryAffiliation': 'tester'}
     return render_template('upload.html', user=session['usr'])
 
 @app_routes.route('/upload', methods=['POST'])
 def upload_file():
+    '''
+    This route handles the file upload and metadata storage
+    '''
     name = session['user_info']['name']
     primaryAffiliation = session['user_info']['dukePrimaryAffiliation']
     netid = session['user_info']['dukeNetID']
@@ -55,7 +64,10 @@ def upload_file():
     if file.filename == '':
         return render_template('upload.html', message='No selected file. Please try again.')
 
-    if file:
+    elif not file.filename.endswith(('.pdf')):
+        return render_template('upload.html', message='Invalid file type. Please upload a .pdf file.')
+    
+    elif file:
         if upload_data_to_server(file, name, netid, primaryAffiliation, subject):
             return render_template('upload.html', message='Thank you for contributing')
         else:
@@ -64,6 +76,9 @@ def upload_file():
    
 @app_routes.route('/dukesso', methods=['GET'])
 def sso_login():   
+    '''
+    This route redirects the user to the Duke SSO login page
+    '''
     responseType = 'code'
     client_id = DUKE_CLIENT_ID
     authorization_base_url = DUKE_AUTHORIZATION_BASE_URL
@@ -78,6 +93,9 @@ def sso_login():
 
 @app_routes.route('/auth', methods=['GET'])
 def duke_auth():
+    '''
+    This route handles the Duke SSO authentication and redirects the user to the home page
+    '''
     expected_state = session['oath_state']
     state = request.args.get('state', None)
     if state != expected_state:
