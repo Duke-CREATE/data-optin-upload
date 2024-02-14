@@ -37,12 +37,12 @@ def parse_pdf(file):
     return text
 
 
-def text_splitting(text_to_split, chunk_size=5_000, overlap=0.1):
+def text_splitting(text_to_split, chunk_size=1_000, overlap=0.1):
     """_summary_
 
     Args:
         text (Str): The string that is going to be splitted
-        tokens (int, optional): The amount of tokens in each batch. Defaults to 1_000.
+        tokens (int, optional): The amount of tokens in each batch. Defaults to 2_000.
     """
     overlap = round(chunk_size * overlap)
     text_splitter = TokenTextSplitter(chunk_size=chunk_size, chunk_overlap=overlap)
@@ -74,7 +74,7 @@ def pdf_embedding(file, model="text-embedding-3-small"):
 
     embeddings = list(map(lambda x: get_embedding(x, model=model), splitted_text))
 
-    df = pd.DataFrame({"document": splitted_text, "embedding": embeddings})
+    df = pd.DataFrame({"document": splitted_text, "values": embeddings})
 
     return df
 
