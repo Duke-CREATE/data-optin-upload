@@ -1,9 +1,17 @@
-import os
-import pinecone
 import datetime
 
 
 def generating_vetors(embbedings_df, metadata, netid):
+    """
+    This function creates the vectors and the ids for the embeddings
+    Args:
+        embbedings_df (pd.DataFrame): The embeddings
+        metadata (Dict): The metadata
+        netid (str): The netid of the user
+    Returns:
+        List: The list of vectors
+        List: The list of ids
+    """
 
     timestamp = datetime.datetime.now().timestamp()
 

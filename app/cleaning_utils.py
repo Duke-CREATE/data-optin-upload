@@ -1,10 +1,8 @@
 import PyPDF2
-import re
 
 # Uncomment if text cleaning is desired
 # from nltk.corpus import stopwords
 # from nltk.tokenize import word_tokenize
-import time
 from langchain.text_splitter import TokenTextSplitter
 import pandas as pd
 from openai import OpenAI
@@ -80,18 +78,7 @@ def pdf_embedding(file, model="text-embedding-3-small"):
 
 def embeddings_from_type(file_type: str, file) -> pd.core.frame.DataFrame:
 
-    match file_type:
-
-        case ".pdf":
-
-            return pdf_embedding(file)
-
-        case ".docx" | ".docm":
-            pass
-
-
-if __name__ == "__main__":
-    file_path = "../sample_docs/cs50_harvard.pdf"
-    with open(file_path, "rb") as file:
-        pdf_embeddings = pdf_embedding(file)
-        print(pdf_embeddings[0])
+    if file_type == ".pdf":
+        return pdf_embedding(file)
+    elif file_type in [".docx", ".docm"]:
+        pass

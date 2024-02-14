@@ -1,0 +1,5 @@
+sample_docs/
+.venv/
+.pytest_cache/
+app/test_app.py
+.venv3/
