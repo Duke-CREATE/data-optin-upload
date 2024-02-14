@@ -1,6 +1,6 @@
 # import pyodbc
 from azure.storage.blob import BlobServiceClient
-from datetime import datetime
+import datetime
 import os
 import dotenv
 from pinecone import Pinecone
@@ -42,7 +42,7 @@ def upload_data_to_server(file, owner_name, subject):
 
     # Get file metadata
     file_type = os.path.splitext(file.filename)[1]
-    timestamp = datetime.now()
+    timestamp = datetime.datetime.now()
 
     # Create a unique blob name
     blob_name = f"{timestamp.strftime('%Y%m%d%H%M%S')}-{file.filename}"
