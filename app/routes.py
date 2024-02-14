@@ -32,15 +32,20 @@ def index():
         return redirect(url_for('app_routes.loginpage'))
 
 # Uncomment this route to enable offline testing - useful for development without SSO
-# @app_routes.route('/offlinetesting', methods=['GET'])
-# def offlinetesting():
-#     session['usr'] = 'testuser'
-#     session['user_info'] = {'name': 'test', 'dukeNetID': 'test123', 'email': 'test@test', 'dukePrimaryAffiliation': 'tester'}
-#     return render_template('upload.html', user='offline')
+@app_routes.route('/offlinetesting', methods=['GET'])
+def offlinetesting():
+    session['usr'] = 'testuser'
+    session['user_info'] = {'name': 'test', 'dukeNetID': 'test123', 'email': 'test@test', 'dukePrimaryAffiliation': 'tester'}
+    return render_template('upload.html', user=session['usr'])
 
 @app_routes.route('/upload', methods=['POST'])
 def upload_file():
-    name = request.form['description']
+    name = session['user_info']['name']
+    primaryAffiliation = session['user_info']['dukePrimaryAffiliation']
+    netid = session['user_info']['dukeNetID']
+    subject = request.form['subject']
+    print(f"Uploading file for {name} ({netid})"
+            f" with primary affiliation {primaryAffiliation} and subject {subject}")
 
     if 'file' not in request.files:
         return render_template('upload.html', message='No file part. Please try again.')
@@ -51,7 +56,7 @@ def upload_file():
         return render_template('upload.html', message='No selected file. Please try again.')
 
     if file:
-        if upload_data_to_server(file, name, session['usr_info']):
+        if upload_data_to_server(file, name, netid, primaryAffiliation, subject):
             return render_template('upload.html', message='Thank you for contributing')
         else:
             return render_template('upload.html', message='Something went wrong. Please try again.')

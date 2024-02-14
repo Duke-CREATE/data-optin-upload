@@ -17,8 +17,8 @@
             <p>We welcome any academic content for use training AI models to be delployed for Duke community access. This data is securely protected by the CREATE Lab and will not be moved outside of Duke. More information can be found at https://sites.duke.edu/createcenter/</p>
         </div>
         <form method="post" action="{{ url_for('app_routes.upload_file') }}" enctype="multipart/form-data">
-            <label for="description">Description:</label>
-            <input type="text" id="description" name="description" required><br><br>
+            <label for="description">Subject:</label>
+            <input type="text" id="subject" name="subject" required><br><br>
 
             <label for="file">File:</label>
             <input type="file" id="file" name="file" required><br><br>
