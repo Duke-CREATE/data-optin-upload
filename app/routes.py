@@ -35,14 +35,14 @@ def index():
         return redirect(url_for('app_routes.loginpage'))
 
 # Uncomment this route to enable offline testing - useful for development without SSO
-@app_routes.route('/offlinetesting', methods=['GET'])
-def offlinetesting():
-    '''
-    FOR TESTING PURPOSES ONLY! Circumvents SSO and logs in a test user
-    '''
-    session['usr'] = 'testuser'
-    session['user_info'] = {'name': 'test', 'dukeNetID': 'test123', 'email': 'test@test', 'dukePrimaryAffiliation': 'tester'}
-    return render_template('upload.html', user=session['usr'])
+# @app_routes.route('/offlinetesting', methods=['GET'])
+# def offlinetesting():
+#     '''
+#     FOR TESTING PURPOSES ONLY! Circumvents SSO and logs in a test user
+#     '''
+#     session['usr'] = 'testuser'
+#     session['user_info'] = {'name': 'test', 'dukeNetID': 'test123', 'email': 'test@test', 'dukePrimaryAffiliation': 'tester'}
+#     return render_template('upload.html', user=session['usr'])
 
 @app_routes.route('/upload', methods=['POST'])
 def upload_file():
