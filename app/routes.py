@@ -8,9 +8,7 @@ app_routes = Blueprint('app_routes', __name__)
 
 
 # Duke OATH URLs
-# TODO: Make sure these are correct and secure
 DUKE_AUTHORIZATION_BASE_URL = 'https://oauth.oit.duke.edu/oidc/authorize'
-# DUKE_REDIRECT_URI = 'https://127.0.0.1:5000/auth'
 DUKE_REDIRECT_URI = 'https://duke-data-donation.azurewebsites.net/auth'
 DUKE_TOKEN_URL = 'https://oauth.oit.duke.edu/oidc/token'
 DUKE_USERINFO_URL = 'https://oauth.oit.duke.edu/oidc/userinfo'
@@ -36,6 +34,8 @@ def index():
 # Uncomment this route to enable offline testing - useful for development without SSO
 # @app_routes.route('/offlinetesting', methods=['GET'])
 # def offlinetesting():
+#     session['usr'] = 'testuser'
+#     session['user_info'] = {'name': 'test', 'dukeNetID': 'test123', 'email': 'test@test', 'dukePrimaryAffiliation': 'tester'}
 #     return render_template('upload.html', user='offline')
 
 @app_routes.route('/upload', methods=['POST'])
@@ -51,7 +51,7 @@ def upload_file():
         return render_template('upload.html', message='No selected file. Please try again.')
 
     if file:
-        if upload_data_to_server(file, name, subject):
+        if upload_data_to_server(file, name, session['usr_info']):
             return render_template('upload.html', message='Thank you for contributing')
         else:
             return render_template('upload.html', message='Something went wrong. Please try again.')
