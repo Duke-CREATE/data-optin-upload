@@ -84,3 +84,20 @@ form input[type="submit"]:hover {
 
 /* Additional Styles */
 /* Add any additional styles you might want here */
+.user-info {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 18px;
+}
+
+button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    background-color: #002a53; 
+    color: #ffffff;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}

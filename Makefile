@@ -6,7 +6,7 @@ install:
 	pip install -r requirements.txt
 
 build:
-	docker build -t data-upload-app:latest .
+	docker build -t $(DOCKER_REPO)/data-upload-app:latest .
 
 push:
 	docker tag flask-app $(DOCKER_REPO)/data-upload-app:latest
