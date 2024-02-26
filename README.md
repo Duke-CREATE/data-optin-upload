@@ -21,3 +21,7 @@ Link to the hosted application can be found [here](https://duke-data-donation.az
 ## MySQL
 
 ![SQL](img/sql.png)
+
+## RAG
+
+![RAG](img/rag.png)
