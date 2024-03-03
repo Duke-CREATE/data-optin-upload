@@ -9,6 +9,7 @@ app/.DS_Store
 #directories
 sample_docs/
 test_notebooks
+test_rafa/
 
 .venv2/
 # C extensions
